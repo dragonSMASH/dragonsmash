@@ -1,0 +1,2 @@
+# dragonsmash
+drasgonSMASH public server

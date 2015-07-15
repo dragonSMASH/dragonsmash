@@ -70,7 +70,7 @@ Vagrant.configure(2) do |config|
     sudo apt-get upgrade
     sudo apt-get install -y git python3 python3-pip libpq-dev python3-dev postgresql postgresql-contrib
     sudo pip3 install -r /vagrant/requirements.txt
-    sudo -u postgres psql -c "CREATE ROLE developer LOGIN password 'password'; CREATE DATABASE dragonsmash ENCODING 'UTF8' OWNDER developer;"
+    sudo -u postgres psql -c "CREATE ROLE developer LOGIN password 'password'; CREATE DATABASE dragonsmash ENCODING 'UTF8' OWNER developer;"
     cd /vagrant
     python3 manage.py migrate
   SHELL

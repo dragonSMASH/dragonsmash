@@ -81,6 +81,7 @@ Vagrant.configure(2) do |config|
     source /vagrant/mistymountain/bin/activate
     pip3 install -r /vagrant/requirements.txt --upgrade
     cd /vagrant
-    python3 manage.py migrate
+    python manage.py makemigrations
+    python manage.py migrate
   SHELL
 end

@@ -75,6 +75,7 @@ Vagrant.configure(2) do |config|
     sudo -u postgres createuser dsmash -S -D -R
     sudo -u postgres psql -c "ALTER ROLE dsmash WITH PASSWORD 'password';"
     sudo -u postgres createdb -O dsmash dragonsmash
+    sudo -u postgres psql dragonsmash -c "CREATE EXTENSION postgis";
     sudo pip3 install virtualenv --upgrade
     virtualenv -p python3 /vagrant/mistymountain
     source /vagrant/mistymountain/bin/activate

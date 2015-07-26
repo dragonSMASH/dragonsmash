@@ -66,12 +66,20 @@ Vagrant.configure(2) do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     sudo apt-get update
-    sudo apt-get dist-upgrade
-    sudo apt-get upgrade
-    sudo apt-get install -y git python3 python3-pip libpq-dev python3-dev postgresql postgresql-contrib
-    sudo pip3 install -r /vagrant/requirements.txt
-    sudo -u postgres psql -c "CREATE ROLE developer LOGIN password 'password';"
-    sudo -u postgres psql -c "CREATE DATABASE dragonsmash ENCODING 'UTF8' OWNER developer;"
+    sudo apt-get dist-upgrade -y
+    sudo apt-get upgrade -y
+    sudo apt-get install -y git python3 python3-pip python3-dev
+    sudo apt-get install -y binutils libproj-dev gdal-bin python-gdal
+    sudo apt-get install -y libpq-dev postgresql-9.3 postgresql-9.3-postgis-2.1 postgresql-server-dev-9.3 postgresql-contrib
+    sudo apt-get autoremove -y
+    sudo -u postgres createuser dsmash -S -D -R
+    sudo -u postgres psql -c "ALTER ROLE dsmash WITH PASSWORD 'password';"
+    sudo -u postgres createdb -O dsmash dragonsmash
+    sudo -u postgres psql dragonsmash -c "CREATE EXTENSION postgis";
+    sudo pip3 install virtualenv --upgrade
+    virtualenv -p python3 /vagrant/mistymountain
+    source /vagrant/mistymountain/bin/activate
+    pip3 install -r /vagrant/requirements.txt --upgrade
     cd /vagrant
     python3 manage.py migrate
   SHELL

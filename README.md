@@ -2,7 +2,7 @@
 dragonSMASH public server
 
 ## Vagrant
-`vagrant up && vagrant ssh && cd /vagrant`
+`vagrant up && vagrant ssh`
 
-## Virtualenv
-`source /vagrant/mistymountain/bin/activate`
+Code is in `~/dragonsmash`
+Virtualenv is in `~/mistymountain` (Automatically activated upon ssh)

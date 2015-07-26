@@ -37,7 +37,11 @@ Vagrant.configure(2) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  # disable the default synced folder
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  config.vm.synced_folder ".", "/home/vagrant/dragonsmash", create: true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -77,11 +81,11 @@ Vagrant.configure(2) do |config|
     sudo -u postgres createdb -O dsmash dragonsmash
     sudo -u postgres psql dragonsmash -c "CREATE EXTENSION postgis";
     sudo pip3 install virtualenv --upgrade
-    virtualenv -p python3 /vagrant/mistymountain
-    source /vagrant/mistymountain/bin/activate
-    pip3 install -r /vagrant/requirements.txt --upgrade
-    cd /vagrant
-    python manage.py makemigrations
-    python manage.py migrate
+    virtualenv -p python3 /home/vagrant/mistymountain
+    source /home/vagrant/mistymountain/bin/activate
+    pip3 install -r /home/vagrant/dragonsmash/requirements.txt --upgrade
+    /home/vagrant/dragonsmash/manage.py makemigrations
+    /home/vagrant/dragonsmash/manage.py migrate
+    echo "source /home/vagrant/mistymountain/bin/activate" > /home/vagrant/.bashrc
   SHELL
 end

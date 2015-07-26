@@ -60,4 +60,4 @@ target/
 .vagrant
 
 # Virtualenv
-mistymountain/
+.venv

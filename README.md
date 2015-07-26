@@ -1,8 +1,8 @@
 # dragonsmash
 dragonSMASH public server
 
-# Vagrant
+## Vagrant
 `vagrant up && vagrant ssh && cd /vagrant`
 
-# Virtualenv
+## Virtualenv
 `source /vagrant/mistymountain/bin/activate`

@@ -8,8 +8,8 @@ PhoneRegex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
 
 
 class Player(models.Model):
-    user = models.OneToOneField(User)
-    phone = models.CharField(max_length=15, validators=[PhoneRegex])
+    user = models.OneToOneField(User, related_name="player")
+    phone = models.CharField(max_length=15, validators=[PhoneRegex], unique=True)
 
 
 class PlayerData(models.Model):

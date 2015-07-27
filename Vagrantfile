@@ -84,8 +84,9 @@ Vagrant.configure(2) do |config|
     virtualenv -p python3 /home/vagrant/mistymountain
     source /home/vagrant/mistymountain/bin/activate
     pip3 install -r /home/vagrant/dragonsmash/requirements.txt --upgrade
-    /home/vagrant/dragonsmash/manage.py makemigrations
+    /home/vagrant/dragonsmash/manage.py makemigrations api
     /home/vagrant/dragonsmash/manage.py migrate
     echo "source /home/vagrant/mistymountain/bin/activate" > /home/vagrant/.bashrc
+    echo "cd dragonsmash" >> /home/vagrant/.bashrc
   SHELL
 end

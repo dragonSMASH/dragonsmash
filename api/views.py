@@ -7,14 +7,14 @@ from api.serializers import RegisterPlayerResource
 
 
 @api_view(['GET'])
-@permission_classes(AllowAny)
+@permission_classes((AllowAny,))
 def status(request):
     response_data = {'message': 'howdy, partner!'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 @api_view(['POST'])
-@permission_classes(AllowAny)
+@permission_classes((AllowAny,))
 def register(request):
     register_info = RegisterPlayerResource(data=request.data)
     if register_info.is_valid(raise_exception=True):
@@ -36,6 +36,6 @@ def exception_handler(exception, context):
     elif hasattr(exception, "messages"):
         response["message"] = exception.messages
     else:
+        raise exception
         response["message"] = "unknown error occurred"
-        dir(exception)
     return Response(response)

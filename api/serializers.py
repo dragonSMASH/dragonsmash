@@ -8,14 +8,15 @@ class RegisterPlayerResource(serializers.Serializer):
     """ Serialize the information required to register a new Player. """
     username = serializers.CharField()
     password = serializers.CharField()
-    email = serializers.CharField(required=False)
     phone = serializers.CharField()
+    # TODO: Add back optional email
 
     def create(self, validated_data):
+        # TODO: Deal with rollback scenario
         user = User(username=validated_data.pop('username'),
-                    email=validated_data.pop('email'),
                     password=validated_data.pop('password'))
         user.full_clean()
+        user.save()
         Token.objects.create(user=user)
         player = Player(user=user, **validated_data)
         player.full_clean()

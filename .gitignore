@@ -61,3 +61,6 @@ target/
 
 # Virtualenv
 .venv
+
+# TEMPORARY. REMOVE ME SOON.
+api/migrations

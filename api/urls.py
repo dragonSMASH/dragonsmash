@@ -13,9 +13,15 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.conf.urls import url
+from views import test, register
+from rest_framework.authtoken import views
 
 urlpatterns = [
-    url(r'^status/', pass),
+    url(r'^status/', test, name="status"),
+    url(r'auth/register', register, name="register"),
+    url(r'auth/login', views.obtain_auth_token, name="register"),
+
+
 ]
 

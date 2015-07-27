@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models  # inherits from django.db.models
-from django.contrib.auth.models import User as BaseUser
+from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 PhoneRegex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
@@ -7,13 +7,13 @@ PhoneRegex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                                      Up to 15 digits allowed.")
 
 
-class User(models.Model):
-    user = models.OneToOneField(BaseUser)
+class Player(models.Model):
+    user = models.OneToOneField(User)
     phone = models.CharField(max_length=15, validators=[PhoneRegex])
 
 
-class UserData(models.Model):
-    user = models.OneToOneField(User)
+class PlayerData(models.Model):
+    player = models.OneToOneField(Player)
     location = models.PointField(geography=True)
     time = models.DateTimeField()
     money = models.IntegerField()
@@ -27,7 +27,7 @@ class Dragon(models.Model):
 
 
 class UserDragon(models.Model):
-    user = models.ForeignKey(User)
+    player = models.ForeignKey(Player)
     dragon = models.ForeignKey(Dragon)
     experience = models.IntegerField()
     last_laid = models.DateTimeField()
@@ -40,13 +40,13 @@ class Effect(models.Model):
 
 
 class DragonEffect(models.Model):
-    user = models.ForeignKey(User)
+    player = models.ForeignKey(Player)
     dragon = models.ForeignKey(UserDragon)
     effect = models.ForeignKey(Effect)
 
 
 class Egg(models.Model):
-    user = models.ForeignKey(User)
+    player = models.ForeignKey(Player)
     dragon = models.ForeignKey(UserDragon)
     location = models.PointField(geography=True)
     lays_dragon_type = models.ForeignKey(Dragon)

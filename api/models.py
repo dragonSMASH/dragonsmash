@@ -26,23 +26,18 @@ class Dragon(models.Model):
     # TODO: implement various base stats
 
 
-class UserDragon(models.Model):
-    player = models.ForeignKey(Player)
-    dragon = models.ForeignKey(Dragon)
-    experience = models.IntegerField()
-    last_laid = models.DateTimeField()
-    # TODO: implement various stats
-
-
 class Effect(models.Model):
     name = models.CharField(max_length=50, unique=True)
     description = models.TextField()
 
 
-class DragonEffect(models.Model):
+class UserDragon(models.Model):
     player = models.ForeignKey(Player)
-    dragon = models.ForeignKey(UserDragon)
-    effect = models.ForeignKey(Effect)
+    dragon = models.ForeignKey(Dragon)
+    experience = models.IntegerField()
+    last_laid = models.DateTimeField()
+    effect = models.ManyToManyField(Effect)
+    # TODO: implement various stats
 
 
 class Egg(models.Model):

@@ -19,7 +19,7 @@ def register(request):
     register_info = RegisterPlayerResource(data=request.data)
     if register_info.is_valid(raise_exception=True):
         player = register_info.save()
-        return Response({"auth_token": player.user.auth_token.key})
+        return Response({"player_id": player.id, "auth_token": player.user.auth_token.key})
 
 
 @api_view(['POST'])
@@ -36,6 +36,6 @@ def exception_handler(exception, context):
     elif hasattr(exception, "messages"):
         response["message"] = exception.messages
     else:
-        raise exception
+        raise exception # TODO: Remove this before deploying
         response["message"] = "unknown error occurred"
     return Response(response)

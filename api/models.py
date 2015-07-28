@@ -45,6 +45,7 @@ class Egg(models.Model):
     dragon = models.ForeignKey(UserDragon)
     location = models.PointField(geography=True)
     lays_dragon_type = models.ForeignKey(Dragon)
+    # TODO: add time
     # TODO: implement various stats
 
     objects = models.GeoManager()

@@ -1,0 +1,16 @@
+language: python
+python:
+  - "3.4"
+install:
+  - pip install -r requirements.txt
+  - pip install coverage
+before_script:
+  - createuser -U postgres -S -D -R dsmash
+  - psql -c "ALTER ROLE dsmash WITH PASSWORD 'password';" -U postgres
+  - createuser -U postgres -s -d -R test_dsmash
+  - psql -c "ALTER ROLE test_dsmash WITH PASSWORD 'password';" -U postgres
+  - createdb -O test_dsmash test_dragonsmash
+  - psql test_dragonsmash -c "CREATE EXTENSION postgis;" -U postgres
+script: coverage run manage.py test --noinput
+after_success:
+  - coverage report

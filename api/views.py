@@ -36,6 +36,5 @@ def exception_handler(exception, context):
     elif hasattr(exception, "messages"):
         response["message"] = exception.messages
     else:
-        raise exception # TODO: Remove this before deploying
         response["message"] = "unknown error occurred"
     return Response(response)

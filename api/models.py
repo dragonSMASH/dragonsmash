@@ -22,6 +22,18 @@ class Player(BaseModel):
     user = models.OneToOneField(User, related_name="player")
     phone = models.CharField(max_length=15, validators=[PhoneRegex], unique=True)
 
+    @property
+    def username(self):
+        return self.user.username
+
+    @property
+    def email(self):
+        return self.user.email
+
+    @property
+    def auth_token(self):
+        return self.user.auth_token
+
     def delete(self, *args, **kwargs):
         super(Player, self).delete(*args, **kwargs)
         self.user.delete(*args, **kwargs)

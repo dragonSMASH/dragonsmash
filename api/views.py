@@ -49,7 +49,7 @@ def register(request):
     register_info = RegisterPlayerResource(data=request.data)
     if register_info.is_valid(raise_exception=True):
         player = register_info.save()
-        return Response({"player_id": player.id, "auth_token": player.user.auth_token.key})
+        return Response({"player_id": player.id, "token": player.user.auth_token.key})
 
 
 @api_post_view

@@ -24,7 +24,7 @@ class RegisterTests(APITestCase):
         expected_response_token = created_user.auth_token.key
         expected_response_player_id = created_user.player.id
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, {"auth_token": expected_response_token, "player_id": expected_response_player_id})
+        self.assertEqual(response.data, {"token": expected_response_token, "player_id": expected_response_player_id})
 
     def test_player_registration_with_valid_data_and_no_email(self):
         player_info = {"username": "shreyas", "password": "password", "phone": "5105555555"}
@@ -33,7 +33,7 @@ class RegisterTests(APITestCase):
         expected_response_token = created_user.auth_token.key
         expected_response_player_id = created_user.player.id
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, {"auth_token": expected_response_token, "player_id": expected_response_player_id})
+        self.assertEqual(response.data, {"token": expected_response_token, "player_id": expected_response_player_id})
 
     def test_player_registration_with_no_username(self):
         player_info = {"password": "password",  "phone": "5105555555"}

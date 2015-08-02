@@ -9,7 +9,6 @@ PhoneRegex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
 
 
 class BaseModel(models.Model):
-
     class Meta:
         abstract = True
 

@@ -22,6 +22,10 @@ class Player(BaseModel):
     user = models.OneToOneField(User, related_name="player")
     phone = models.CharField(max_length=15, validators=[PhoneRegex], unique=True)
 
+    def delete(self, *args, **kwargs):
+        super(Player, self).delete(*args, **kwargs)
+        self.user.delete(*args, **kwargs)
+
     class PlayerManager(models.Manager):
         @transaction.atomic()
         def create_player(self, username, password, phone, email=None):

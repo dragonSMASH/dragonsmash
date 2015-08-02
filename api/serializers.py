@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
-from api.models import Player
+from .models import Player
 
 
 class RegisterPlayerResource(serializers.Serializer):

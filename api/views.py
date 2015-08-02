@@ -1,16 +1,16 @@
-import json
-from django.http import HttpResponse
+from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from api.serializers import RegisterPlayerResource
+from rest_framework.views import exception_handler
+from .serializers import RegisterPlayerResource
 
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
 def status(request):
     response_data = {'message': 'howdy, partner!'}
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
+    return Response(response_data)
 
 
 @api_view(['POST'])
@@ -28,13 +28,20 @@ def logout(request):
     return Response({"message": "logout successful"})
 
 
-def exception_handler(exception, context):
+def handle_exception(exception, context):
     """ Return well-formed and consistent response in case any exceptions occur """
-    response = {}
+    response = exception_handler(exception, context)
+    data = {}
     if hasattr(exception, "detail"):
-        response["message"] = exception.detail
+        data["message"] = exception.detail
     elif hasattr(exception, "messages"):
-        response["message"] = exception.messages
+        data["message"] = exception.messages
     else:
-        response["message"] = "unknown error occurred"
-    return Response(response)
+        data["message"] = "unknown error occurred"
+
+    # add in the default text if we're debugging and not testing
+    if settings.DEBUG and not settings.TEST:
+        data["extra"] = response.data
+
+    response.data = data
+    return response

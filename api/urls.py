@@ -1,6 +1,6 @@
 from django.conf.urls import url
-from api.views import status, register, logout
 from rest_framework.authtoken import views
+from .views import status, register, logout
 
 urlpatterns = [
     url(r'^status/$', status, name="status"),

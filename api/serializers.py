@@ -1,7 +1,7 @@
 from django.contrib.gis.geos import Point
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
-from .models import Player
+from .models import Player, PlayerData
 
 
 class RegisterPlayerResource(serializers.Serializer):
@@ -25,3 +25,14 @@ class RegisterPlayerResource(serializers.Serializer):
                                   money=0)
         Token.objects.create(user=player.user)
         return player
+
+
+class PlayerLocationUpdateResource(serializers.Serializer):
+    latitude = serializers.FloatField()
+    longitude = serializers.FloatField()
+
+    def update(self, instance, validated_data):
+        instance.location.x = validated_data.pop('longitude')
+        instance.location.y = validated_data.pop('latitude')
+        instance.save()
+        return instance

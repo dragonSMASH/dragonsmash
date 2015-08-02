@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User
+from django.contrib.gis.geos import Point
 from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
-from .models import Player
+from .models import Player, PlayerData
 
 
 class StatusTests(APITestCase):
@@ -103,3 +104,34 @@ class LogoutTests(APITestCase):
         response = self.client.post(self.logout_url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(response.data, {'message': 'Invalid token.'})
+
+
+class PlayerLocationUpdateTests(APITestCase):
+    update_url = reverse("api/v1:location_update")
+
+    @classmethod
+    def setUpClass(cls):
+        cls.player = Player.objects.create_player("shreyas", "password", "5105555555")
+        cls.player_data = PlayerData.objects.create(player=cls.player,
+                                                    location=Point(42, 42, srid=4326),
+                                                    money=0)
+        cls.token = Token.objects.create(user=cls.player.user)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.player.delete()
+
+    def setUp(self):
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
+
+    def test_location_update_with_valid_data(self):
+        lat = "37.8700"
+        long = "-122.2590"
+        location_update = {"latitude": lat,
+                           "longitude": long}
+        response = self.client.post(self.update_url, location_update)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, {'message': 'update received'})
+        player_data = PlayerData.objects.get(player=self.player)
+        self.assertEqual(player_data.location.x, float(long))
+        self.assertEqual(player_data.location.y, float(lat))

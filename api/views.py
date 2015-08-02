@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.views import exception_handler
-from .serializers import RegisterPlayerResource
+from .serializers import RegisterPlayerResource, PlayerLocationUpdateResource
 
 
 # Convenience decorators for get-only and post-only view
@@ -56,3 +56,12 @@ def register(request):
 def logout(request):
     request.user.auth_token.delete()
     return Response({"message": "logout successful"})
+
+
+@api_post_view
+def location_update(request):
+    player_data = request.user.player.data
+    update_info = PlayerLocationUpdateResource(player_data, data=request.data)
+    if update_info.is_valid(raise_exception=True):
+        update_info.save()
+        return Response({"message": "update received"})

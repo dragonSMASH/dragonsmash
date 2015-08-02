@@ -73,8 +73,8 @@ class Effect(BaseModel):
 
 
 class PlayerDragon(BaseModel):
-    player = models.ForeignKey(Player, related_name='player')
-    dragon = models.ForeignKey(Dragon)
+    player = models.ForeignKey(Player, related_name='dragon')
+    base_dragon = models.ForeignKey(Dragon)
     experience = models.IntegerField()
     last_laid = models.DateTimeField()
     effect = models.ManyToManyField(Effect)
@@ -82,8 +82,8 @@ class PlayerDragon(BaseModel):
 
 
 class Egg(BaseModel):
-    player = models.ForeignKey(Player)
-    dragon = models.ForeignKey(PlayerDragon)
+    player = models.ForeignKey(Player, related_name='egg')
+    dragon = models.ForeignKey(PlayerDragon, related_name='egg')
     location = models.PointField(geography=True)
     lays_dragon_type = models.ForeignKey(Dragon)
     # TODO: add time

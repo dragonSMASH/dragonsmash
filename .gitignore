@@ -62,5 +62,8 @@ target/
 # Virtualenv
 .venv
 
+# PyCharm
+.idea
+
 # TEMPORARY. REMOVE ME SOON.
 api/migrations

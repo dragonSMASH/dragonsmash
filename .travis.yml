@@ -1,0 +1,8 @@
+language: python
+python:
+  - "3.4"
+install:
+  - pip install -r requirements/travis.txt
+script: coverage run --source='.' manage.py test --settings=config.settings.travis --noinput
+after_success:
+  - coverage report

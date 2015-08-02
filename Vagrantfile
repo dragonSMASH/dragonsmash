@@ -107,10 +107,10 @@ Vagrant.configure(2) do |config|
     sudo pip3 install virtualenv --upgrade
     virtualenv -p python3 /home/vagrant/mistymountain
     source /home/vagrant/mistymountain/bin/activate
-    pip3 install -r /home/vagrant/dragonsmash/requirements.txt --upgrade
+    pip3 install -r /home/vagrant/dragonsmash/requirements/dev.txt --upgrade
 
     # install models to db
-    /home/vagrant/dragonsmash/manage.py makemigrations api
+    /home/vagrant/dragonsmash/manage.py makemigrations api # TODO: can this be removed once migrations are committed in?
     /home/vagrant/dragonsmash/manage.py migrate
 
 

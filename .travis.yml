@@ -3,6 +3,8 @@ python:
   - "3.4"
 install:
   - pip install -r requirements/travis.txt
+before_script:
+  - manage.py makemigrations api # TODO: remove this once db migrations have been committed
 script: coverage run --source='.' manage.py test --settings=config.settings.travis --noinput
 after_success:
   - coverage report

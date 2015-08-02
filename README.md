@@ -1,4 +1,7 @@
-# dragonsmash  ![Build Status](https://travis-ci.org/dragonSMASH/dragonsmash.svg?branch=master)
+# dragonsmash  
+
+[![Build Status](https://travis-ci.org/dragonSMASH/dragonsmash.svg?branch=master)](https://travis-ci.org/dragonSMASH/dragonsmash)
+
 dragonSMASH public server
 
 ## Vagrant

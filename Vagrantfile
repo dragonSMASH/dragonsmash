@@ -11,6 +11,10 @@ Vagrant.configure(2) do |config|
   # sync django source to home directory of vagrant user
   config.vm.synced_folder "./dragonsmash", "/home/vagrant/dragonsmash", create: true
 
+  config.push.define "local-exec" do |push|
+    push.inline = "echo 'deploying app...'"
+  end
+
   config.vm.provision "shell", inline: <<-SHELL
 
     # updates package listing

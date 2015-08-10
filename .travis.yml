@@ -1,6 +1,8 @@
 language: python
 python:
   - "3.4"
+before_install:
+    cd dragonsmash
 install:
   - pip install -r requirements/travis.txt
 before_script:

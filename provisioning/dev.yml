@@ -1,0 +1,79 @@
+---
+- hosts: dev
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Update apt-cache
+      apt: update_cache=yes
+
+    - name: Upgrade all packages
+      apt: upgrade=dist
+
+    - name: Install python and pip
+      apt: name={{ item }} state=latest
+      with_items:
+        - python3
+        - python3-pip
+        - python3-dev
+
+    - name: Install GIS packages
+      apt: name={{ item }} state=latest
+      with_items:
+        - binutils # needed for geodjango to discover the GIS packages
+        - libproj-dev
+        - gdal-bin
+        - python-gdal
+
+    - name: Install Postgres and PostGIS
+      apt: name={{ item }} state=latest
+      with_items:
+        - libpq-dev
+        - postgresql-9.3
+        - postgresql-contrib
+        - postgresql-9.3-postgis-2.1
+        - postgresql-server-dev-9.3
+        - python-psycopg2 # system level psycopg2 needed for ansible to set up db
+
+- hosts: dev
+  become: yes
+  become_user: postgres
+  tasks:
+    - name: Create live db user
+      postgresql_user: name=dsmash password=password encrypted=yes state=present
+    - name: Create live db
+      postgresql_db: name=dragonsmash owner=dsmash state=present
+    - name: Enable postgis extension on live db
+      postgresql_ext: name=postgis db=dragonsmash state=present
+
+    - name: Create test db user
+      postgresql_user: name=test_dsmash password=password encrypted=yes state=present
+    - name: Create test db
+      postgresql_db: name=test_dragonsmash owner=test_dsmash state=present
+    - name: Enable postgis extension on test db
+      postgresql_ext: name=postgis db=test_dragonsmash state=present
+
+- hosts: dev
+  tasks:
+    - name: Install virtualenv
+      pip: executable=pip3 name=virtualenv state=latest
+
+    - name: Create virtualenv
+      command: virtualenv ~/mistymountain --no-site-packages
+      args:
+        creates: ~/mistymountain/bin/activate
+
+    - name: Install dev requirements
+      pip: virtualenv=~/mistymountain
+           requirements=~/dragonsmash/requirements/dev.txt
+           state=present
+
+    # TODO: Remove this once migrations are committed
+    - name: Create base migrations for API
+      django_manage: virtualenv=~/mistymountain app_path=~/dragonsmash command="makemigrations api"
+
+    - name: Install models to db
+      django_manage: virtualenv=~/mistymountain app_path=~/dragonsmash command=migrate
+
+    - name: Create .bashrc
+      template: src=templates/bashrc.j2 dest=~/.bashrc
+
